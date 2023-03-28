@@ -1,9 +1,0 @@
-@use "sass:math";
-
-@function px-to-em($px) {
-    @if math.is-unitless($px) {
-        @return math.div($px, 16) + em;
-    } @else {
-        @error "Don't use unit in em function"
-    }    
-};
