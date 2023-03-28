@@ -7,7 +7,7 @@ const showAgendaAddItemFormHandler = (event: MouseEvent) => {
   ) as HTMLFormElement;
   const formInputArea = associatedFormElement.querySelector(
     ".agenda__add-item-form__text-area"
-  )!;
+  )! as HTMLDivElement;
   const inputText = formInputArea.textContent!;
   const formSaveBtn = associatedFormElement.querySelector(
     ".agenda__save-item-btn"
@@ -15,6 +15,7 @@ const showAgendaAddItemFormHandler = (event: MouseEvent) => {
 
   /* main logic */
   associatedFormElement.style.display = "initial";
+  formInputArea.focus();
   thisBtnElement.style.display = "none";
 
   if (inputText.trim() == "") {

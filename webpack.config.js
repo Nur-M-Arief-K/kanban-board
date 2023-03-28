@@ -16,6 +16,7 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
+      favicon: "./src/images/favicon-16x16.ico",
     }),
   ],
   module: {
@@ -30,7 +31,7 @@ const config = {
         use: [stylesHandler, "css-loader", "sass-loader"],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|ico)$/i,
         type: "asset",
       },
     ],
@@ -46,7 +47,7 @@ module.exports = () => {
     config.output = {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].[contenthash].js",
-      assetModuleFilename: "images/[name].[hash][ext]",
+      assetModuleFilename: "images/[name][ext]",
       clean: true,
     };
     config.plugins.push(

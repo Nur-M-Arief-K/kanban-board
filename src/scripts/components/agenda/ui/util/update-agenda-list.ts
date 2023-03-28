@@ -1,10 +1,11 @@
 import { AgendaDataKeys, AgendaDataList } from "../../model";
+import editIcon from "../../../../../images/icon/edit-icon.svg";
 
 import {
-    agendaData,
-    updateAgendaDataFromLocalStorage,
-    populateLocalStorageWithDummyData,
-  } from "../../data";
+  agendaData,
+  updateAgendaDataFromLocalStorage,
+  populateLocalStorageWithDummyData,
+} from "../../data";
 
 const updateAgendaList = (...args: AgendaDataKeys) => {
   /* setup */
@@ -18,10 +19,12 @@ const updateAgendaList = (...args: AgendaDataKeys) => {
   let agendaDataKeys: AgendaDataKeys;
 
   /* main logic */
+    /* update agendaDataKeys based on args */
   args.length == 0
     ? (agendaDataKeys = ["backlog", "progress", "complete", "pending"])
     : (agendaDataKeys = [...args]);
 
+    /* update HTMLLiElement with class "agenda__item__content__item " on its HTMLLiElement with id backlog, progress, complete, and pending*/
   agendaDataKeys.forEach((key) => {
     const ulParent = document.querySelector(
       `.agenda__item--${key} .agenda__item__content`
@@ -30,39 +33,54 @@ const updateAgendaList = (...args: AgendaDataKeys) => {
 
     /* create list element and helper element, cannot use foreach because we need add one helper element eventhough the array is empty */
     for (let index = 0; index <= agendaData[key!].length; index++) {
-      const activity = agendaData[key!][index];
+      const activityText = agendaData[key!][index];
 
       /* create list element */
       const activityListEl = document.createElement("li");
+
+      const activityListElTextContent = document.createElement(
+        "span"
+      ) as HTMLSpanElement;
+      activityListElTextContent.classList.add(
+        "agenda__item__content__item__text-content"
+      );
+
+      activityListEl.appendChild(activityListElTextContent);
 
       if (index != agendaData[key!].length) {
         activityListEl.setAttribute("draggable", "true");
 
         /* add event listener to not-last list element */
-        activityListEl.addEventListener("focusout", (event: FocusEvent) => {
-          /* helper variable */
-          const liElement = event.target as HTMLLIElement;
-          const textContent = liElement.textContent!;
-          const liElementId = +liElement.getAttribute("index")!;
+        activityListElTextContent.addEventListener(
+          "focusout",
+          (event: FocusEvent) => {
+            /* helper variable */
+            const spanElement = event.target as HTMLSpanElement;
+            const liElement = spanElement.parentElement as HTMLLIElement;
 
-          const parentElement = liElement.closest(
-            ".agenda__item"
-          ) as HTMLUListElement;
-          const parentElementId = parentElement.id as AgendaDataList;
+            const textContent = liElement.textContent!;
+            const liElementId = +liElement.getAttribute("index")!;
 
-          /* main logic */
-          liElement.removeAttribute("contenteditable");
+            const parentElement = liElement.closest(
+              ".agenda__item"
+            ) as HTMLUListElement;
+            const parentElementId = parentElement.id as AgendaDataList;
 
-          if (textContent.trim() == "") {
-            // if the content is empty, remove the item from array and update DOM
-            agendaData[parentElementId].splice(liElementId, 1);
-            localStorage.setItem("agendaData", JSON.stringify(agendaData));
-            updateAgendaList(parentElementId);
-          } else {
-            agendaData[parentElementId][liElementId] = textContent;
-            localStorage.setItem("agendaData", JSON.stringify(agendaData));
+            /* main logic */
+            spanElement.removeAttribute("contenteditable");
+            liElement.classList.remove("agenda__item__content__item--edit");
+
+            if (textContent.trim() == "") {
+              // if the content is empty, remove the item from array and update DOM
+              agendaData[parentElementId].splice(liElementId, 1);
+              localStorage.setItem("agendaData", JSON.stringify(agendaData));
+              updateAgendaList(parentElementId);
+            } else {
+              agendaData[parentElementId][liElementId] = textContent;
+              localStorage.setItem("agendaData", JSON.stringify(agendaData));
+            }
           }
-        });
+        );
       }
 
       activityListEl.classList.add(
@@ -71,15 +89,15 @@ const updateAgendaList = (...args: AgendaDataKeys) => {
       );
 
       activityListEl.setAttribute("index", index.toString());
-      activityListEl.textContent = activity;
+      activityListElTextContent.textContent = activityText;
 
       /* create edit icon, span and img element */
       if (index != agendaData[key!].length) {
         const editIconSpanEl = document.createElement("span");
         editIconSpanEl.classList.add("agenda__item__content__item__edit-icon");
 
-        const editImgIconEl = document.createElement("img");
-        editImgIconEl.setAttribute("src", "./images/icon/edit-icon.svg");
+        const editImgIconEl = new Image();
+        editImgIconEl.src = editIcon;
         editImgIconEl.setAttribute("alt", "edit icon");
 
         editIconSpanEl.appendChild(editImgIconEl);
@@ -90,8 +108,12 @@ const updateAgendaList = (...args: AgendaDataKeys) => {
           const listElement = (event.target as HTMLSpanElement).closest(
             ".agenda__item__content__item"
           ) as HTMLLIElement;
-          listElement.setAttribute("contenteditable", "true");
-          listElement.focus();
+          
+          const spanElement = listElement.querySelector("span");
+          listElement.classList.add("agenda__item__content__item--edit");
+          console.log(listElement);
+          spanElement.setAttribute("contenteditable", "true");
+          spanElement.focus();
         });
       }
 
@@ -159,7 +181,7 @@ const updateAgendaList = (...args: AgendaDataKeys) => {
           const columnElement = containerElement.parentElement!;
           const columnElementId = columnElement.id as AgendaDataList;
 
-          // //get data
+          //get data
           const transferredId = (event.dataTransfer!.getData(
             "list"
           ) as AgendaDataList)!;
@@ -184,8 +206,9 @@ const updateAgendaList = (...args: AgendaDataKeys) => {
             updateAgendaList(transferredId);
           } else {
             const departureArray = Array.from(
-              document.querySelector(`#${transferredId} .agenda__item__content`)!
-                .children
+              document.querySelector(
+                `#${transferredId} .agenda__item__content`
+              )!.children
             )
               .filter((children) => children.textContent != "")
               .map((item) => item.textContent) as string[];

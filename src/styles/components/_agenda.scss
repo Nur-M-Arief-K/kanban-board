@@ -85,7 +85,6 @@
       gap: $content-gap;
 
       margin-top: map-get(v.$margin, "16");
-      // margin-bottom: map-get(v.$margin, "16");
 
       min-height: f.px-to-em(50);
       max-height: f.px-to-em(300);
@@ -106,11 +105,12 @@
 
         transition: all 0.3s border-top 0;
 
-        &[contenteditable="true"] {
+        &--edit {
           border: none;
           outline: none;
           box-shadow: v.$content-editable-box-shadow;
           cursor: auto !important;
+          transition: all 0.3s;
         }
 
         &:hover {
@@ -124,6 +124,14 @@
         &__edit-icon {
           cursor: pointer;
           margin-left: auto;
+        }
+
+        &__text-content {
+          &[contenteditable="true"] {
+            border: none;
+            outline: none;
+            cursor: auto !important;
+          }
         }
       }
     }
