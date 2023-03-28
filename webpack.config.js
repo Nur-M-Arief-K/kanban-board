@@ -8,33 +8,15 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 
 const config = {
   entry: "./src/index.ts",
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].js",
-    assetModuleFilename: "img/[name][ext]",
-    clean: true,
-  },
-  devServer: {
-    open: true,
-    host: "localhost",
-    port: 6060,
-    liveReload: true,
-    compress: true,
-    static: {
-      directory: path.join(__dirname, 'src'),
-    },
-  },
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      chunks: "all",
     },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
-
-    new MiniCssExtractPlugin(),
   ],
   module: {
     rules: [
@@ -61,8 +43,38 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = "production";
+    config.output = {
+      path: path.resolve(__dirname, "dist"),
+      filename: "[name].[contenthash].js",
+      assetModuleFilename: "images/[name].[hash][ext]",
+      clean: true,
+    };
+    config.plugins.push(
+      new MiniCssExtractPlugin({
+        filename: "[name].[contenthash].css",
+      })
+    );
   } else {
     config.mode = "development";
+    config.output = {
+      path: path.resolve(__dirname, "dist"),
+      filename: "[name].js",
+      assetModuleFilename: "images/[name][ext]",
+      clean: true,
+    };
+    config.devServer = {
+      open: true,
+      host: "localhost",
+      port: 6060,
+      liveReload: true,
+      compress: true,
+      static: {
+        directory: path.join(__dirname, "src"),
+      },
+    };
+    config.plugins.push(
+      new MiniCssExtractPlugin()
+    );
   }
   return config;
 };

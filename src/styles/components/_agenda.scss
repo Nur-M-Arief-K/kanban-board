@@ -1,0 +1,184 @@
+@use "../globals/colors" as c;
+@use "../globals/variables" as v;
+@use "../utils/functions" as f;
+@use "../utils/breakpoints" as b;
+@use "../mixins/custom-scrollbar" as s;
+@use "../mixins/button" as btn;
+@use "sass:color";
+
+.agenda {
+  $agenda-gap: f.px-to-em(20);
+
+  /* default style is for screen with min-width: 0 size*/
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(4, auto);
+  gap: $agenda-gap;
+  padding: $agenda-gap;
+
+  @include b.breakpoint-sm {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+  }
+  @include b.breakpoint-md {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+  }
+  @include b.breakpoint-lg {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(1, auto);
+  }
+
+  &__item {
+    /* change every descendant element of i.e agenda__item--backlog with class .agenda__item__title */
+    @each $agenda-key, $agenda-associated-color in v.$agenda-list {
+      &--#{$agenda-key} {
+        .agenda__item__title {
+          background-color: $agenda-associated-color;
+        }
+
+        .agenda__save-item-btn {
+          background-color: $agenda-associated-color;
+          text-shadow: v.$text-shadow;
+          transition: all 0.3s ease-in;
+
+          &:hover {
+            background-color: color.mix(#fff, $agenda-associated-color, 30%);
+          }
+        }
+      }
+    }
+
+    /* container added to prevent content stretch based on column width*/
+    &__container {
+      display: block;
+      padding: f.px-to-em(16);
+      border-radius: f.px-to-em(8);
+      background-color: rgba(map-get(c.$colors, "black"), $alpha: 0.6);
+      overflow: hidden;
+
+      /* backdrop blur effect */
+      $blur-value: f.px-to-em(2);
+      backdrop-filter: blur($blur-value);
+      -webkit-backdrop-filter: blur($blur-value);
+    }
+
+    &__title {
+      display: block;
+      width: fit-content;
+      padding: f.px-to-em(4);
+      margin: 0 auto map-get(v.$margin, "16");
+
+      color: map-get(c.$colors, "white");
+      text-shadow: v.$text-shadow;
+
+      border-radius: f.px-to-em(5);
+
+      font-size: f.px-to-em(28);
+    }
+
+    &__content {
+      $content-gap: f.px-to-em(6);
+
+      display: flex;
+      flex-direction: column;
+      gap: $content-gap;
+
+      margin-top: map-get(v.$margin, "16");
+      // margin-bottom: map-get(v.$margin, "16");
+
+      min-height: f.px-to-em(50);
+      max-height: f.px-to-em(300);
+
+      @include s.custom-scrollbar(10);
+
+      &__item {
+        /* width 95% to give scrollbar in the parent element a margin */
+        width: 95%;
+        padding: f.px-to-em(12);
+
+        display: flex;
+
+        color: map-get(c.$colors, "white");
+        background-color: map-get(c.$colors, "black");
+
+        background-clip: padding-box;
+
+        transition: all 0.3s border-top 0;
+
+        &[contenteditable="true"] {
+          border: none;
+          outline: none;
+          box-shadow: v.$content-editable-box-shadow;
+          cursor: auto !important;
+        }
+
+        &:hover {
+          cursor: grab;
+        }
+
+        &:last-of-type {
+          background-color: transparent;
+        }
+
+        &__edit-icon {
+          cursor: pointer;
+          margin-left: auto;
+        }
+      }
+    }
+  }
+
+  &__add-item-btn {
+    @include btn.button;
+    margin-top: map-get(v.$margin, "8");
+    margin-bottom: map-get(v.$margin, "8");
+
+    background-color: transparent;
+    color: map-get(c.$colors, "white");
+
+    transition: all 0.3s ease-in;
+    &:hover {
+      color: map-get(c.$colors, "black");
+      background-color: rgba(map-get(c.$colors, "white"), 0.5);
+    }
+  }
+
+  &__save-item-btn {
+    @include btn.button;
+
+    color: map-get(c.$colors, "white");
+  }
+
+  &__cancel-add-item-btn {
+    @include btn.button;
+    color: map-get(c.$colors, "black");
+    background-color: map-get(c.$colors, "white");
+    transition: all 0.3s ease-in;
+
+    &:hover {
+      background-color: map-get(c.$colors, "black");
+      color: map-get(c.$colors, "white");
+    }
+  }
+
+  &__add-item-form {
+    display: none;
+
+    &__text-area {
+      min-height: f.px-to-em(100);
+      border: 8px solid mix(#000, map-get(c.$colors, "white"), 30%);
+      border-radius: map-get(v.$border-radius, "8");
+      margin-top: map-get(v.$margin, "16");
+      margin-bottom: map-get(v.$margin, "16");
+      background-color: map-get(c.$colors, "white");
+      word-break: break-word;
+    }
+  }
+
+  &__btn-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: f.px-to-em(8);
+  }
+}

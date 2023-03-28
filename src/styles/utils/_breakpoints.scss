@@ -1,0 +1,36 @@
+@use "./functions" as f;
+
+// 480px, 768, 1024, 1200, 1400
+$breakpoints: (
+    sm: f.px-to-em(480),
+    md: f.px-to-em(768),
+    lg: f.px-to-em(1024),
+    xl: f.px-to-em(1200),
+    xxl: f.px-to-em(1400),
+);
+
+@mixin breakpoint-sm {
+    @media screen and (min-width: map-get($breakpoints, "sm")) {
+        @content;
+    }
+}
+@mixin breakpoint-md {
+    @media screen and (min-width: map-get($breakpoints, "md")) {
+        @content;
+    }
+}
+@mixin breakpoint-lg {
+    @media screen and (min-width: map-get($breakpoints, "lg")) {
+        @content;
+    }
+}
+@mixin breakpoint-xl {
+    @media screen and (min-width: map-get($breakpoints, "xl")) {
+        @content;
+    }
+}
+@mixin breakpoint-xxl {
+    @media screen and (min-width: map-get($breakpoints, "xxl")) {
+        @content;
+    }
+}

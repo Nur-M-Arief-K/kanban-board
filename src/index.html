@@ -1,12 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kanban board</title>
-</head>
-<body>
-    <h3 class="red">Lorem, ipsum dolor. Lorem, ipsum dolor.</h3>
-</body>
+  </head>
+  <body class="app__background">
+  <!-- <body> -->
+    <h1 class="app__title">Kanban Board</h1>
+    <span class="app__tagline">Helps you manage your target</span>
+    <ul class="agenda">
+      <li id="backlog" class="agenda__item agenda__item--backlog">
+        <div class="agenda__item__container">
+          <h2 class="agenda__item__title">Backlog</h2>
+          <ul class="agenda__item__content"></ul>
+          <button type="button" class="agenda__add-item-btn">+ Add item</button>
+          <form class="agenda__add-item-form" aria-hidden="true">
+            <div
+              class="agenda__add-item-form__text-area"
+              contenteditable="true"
+            ></div>
+            <div class="agenda__btn-group">
+              <button class="agenda__cancel-add-item-btn" type="button">
+                Cancel
+              </button>
+              <button
+                class="agenda__save-item-btn"
+                type="submit"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </li>
+      <li id="progress" class="agenda__item agenda__item--progress">
+        <div class="agenda__item__container">
+          <h2 class="agenda__item__title">Progress</h2>
+          <ul class="agenda__item__content"></ul>
+          <button type="button" class="agenda__add-item-btn">+ Add item</button>
+          <form class="agenda__add-item-form" aria-hidden="true">
+            <div
+              class="agenda__add-item-form__text-area"
+              contenteditable="true"
+            ></div>
+            <div class="agenda__btn-group">
+              <button class="agenda__cancel-add-item-btn" type="button">
+                Cancel
+              </button>
+              <button
+                class="agenda__save-item-btn"
+                type="submit"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </li>
+      <li id="complete" class="agenda__item agenda__item--complete">
+        <div class="agenda__item__container">
+          <h2 class="agenda__item__title">Complete</h2>
+          <ul class="agenda__item__content"></ul>
+          <button type="button" class="agenda__add-item-btn">+ Add item</button>
+          <form class="agenda__add-item-form" aria-hidden="true">
+            <div
+              class="agenda__add-item-form__text-area"
+              contenteditable="true"
+            ></div>
+            <div class="agenda__btn-group">
+              <button class="agenda__cancel-add-item-btn" type="button">
+                Cancel
+              </button>
+              <button
+                class="agenda__save-item-btn"
+                type="submit"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </li>
+      <li id="pending" class="agenda__item agenda__item--pending">
+        <div class="agenda__item__container">
+          <h2 class="agenda__item__title">Pending</h2>
+          <ul class="agenda__item__content"></ul>
+          <button class="agenda__add-item-btn" type="button">+ Add item</button>
+          <form class="agenda__add-item-form" aria-hidden="true">
+            <div
+              class="agenda__add-item-form__text-area"
+              contenteditable="true"
+            ></div>
+            <div class="agenda__btn-group">
+              <button class="agenda__cancel-add-item-btn" type="button">
+                Cancel
+              </button>
+              <button
+                class="agenda__save-item-btn"
+                type="submit"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </li>
+    </ul>
+  </body>
 </html>

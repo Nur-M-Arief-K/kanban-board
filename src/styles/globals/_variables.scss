@@ -1,0 +1,32 @@
+@use "./colors" as c;
+@use "../utils/functions" as f;
+
+$agenda-list: (
+  "backlog": map-get(c.$colors, "black"),
+  "progress": map-get(c.$colors, "yellow"),
+  "complete": map-get(c.$colors, "green"),
+  "pending": map-get(c.$colors, "red"),
+);
+
+/* box shadow */
+$base-box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+$inset-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+$content-editable-box-shadow: 0 0 5px 2px rgba(map-get(c.$colors, "white"), 0.5) inset;
+
+$text-shadow: 2px 2px 5px black;
+
+$padding: (
+  "8": f.px-to-em(8),
+  "16": f.px-to-em(16),
+);
+
+$margin: (
+  "8": f.px-to-em(8),
+  "16": f.px-to-em(16),
+);
+
+$border-radius: (
+  "8": f.px-to-em(8),
+  "16": f.px-to-em(16),
+  "circle": 50%,
+);
